@@ -51,11 +51,11 @@ export async function POST(request: NextRequest) {
       type: file.type
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error);
     return NextResponse.json({ 
       success: false, 
-      error: 'Upload failed' 
+      error: error?.message || 'Upload failed' 
     }, { status: 500 });
   }
 }
