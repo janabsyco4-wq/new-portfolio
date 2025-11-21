@@ -24,12 +24,16 @@ export async function POST(request: NextRequest) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    
+    // For PDFs, use raw resource type explicitly
+    const isPdf = file.type === 'application/pdf';
     const base64 = buffer.toString('base64');
     const dataURI = `data:${file.type};base64,${base64}`;
 
     const result = await cloudinary.uploader.upload(dataURI, {
       folder: 'portfolio/uploads',
-      resource_type: 'auto',
+      resource_type: isPdf ? 'raw' : 'image',
+      format: isPdf ? 'pdf' : undefined,
     });
 
     return NextResponse.json({
