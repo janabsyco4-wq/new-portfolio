@@ -20,7 +20,9 @@ export default function ProjectManager() {
   const [isEditing, setIsEditing] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingMain, setUploadingMain] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   // Form state
@@ -155,7 +157,10 @@ export default function ProjectManager() {
 
   // Handle file upload
   const handleFileUpload = async (file: File, type: 'image' | 'pdf' | 'gallery') => {
-    setUploading(true);
+    if (type === 'image') setUploadingMain(true);
+    else if (type === 'gallery') setUploadingGallery(true);
+    else if (type === 'pdf') setUploadingPdf(true);
+    
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -183,7 +188,9 @@ export default function ProjectManager() {
       alert('Error uploading file');
       console.error(error);
     } finally {
-      setUploading(false);
+      if (type === 'image') setUploadingMain(false);
+      else if (type === 'gallery') setUploadingGallery(false);
+      else if (type === 'pdf') setUploadingPdf(false);
     }
   };
 
@@ -257,12 +264,12 @@ export default function ProjectManager() {
               />
               <label className="px-4 py-3 bg-[var(--accent)] text-white rounded-lg font-semibold cursor-pointer hover:opacity-90 transition-opacity flex items-center gap-2">
                 <span>📤</span>
-                <span>{uploading ? 'Uploading...' : 'Upload'}</span>
+                <span>{uploadingMain ? 'Uploading...' : 'Upload'}</span>
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  disabled={uploading}
+                  disabled={uploadingMain}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) handleFileUpload(file, 'image');
@@ -313,12 +320,12 @@ export default function ProjectManager() {
               </button>
               <label className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold cursor-pointer hover:opacity-90 transition-opacity flex items-center gap-2">
                 <span>📤</span>
-                <span>{uploading ? 'Uploading...' : 'Upload'}</span>
+                <span>{uploadingGallery ? 'Uploading...' : 'Upload'}</span>
                 <input
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  disabled={uploading}
+                  disabled={uploadingGallery}
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) handleFileUpload(file, 'gallery');
@@ -509,12 +516,12 @@ export default function ProjectManager() {
                 />
                 <label className="px-3 py-3 bg-red-600 text-white rounded-lg font-semibold cursor-pointer hover:opacity-90 transition-opacity flex items-center gap-2 whitespace-nowrap">
                   <span>📄</span>
-                  <span className="hidden sm:inline">{uploading ? 'Uploading...' : 'Upload'}</span>
+                  <span className="hidden sm:inline">{uploadingPdf ? 'Uploading...' : 'Upload'}</span>
                   <input
                     type="file"
                     accept=".pdf,application/pdf"
                     className="hidden"
-                    disabled={uploading}
+                    disabled={uploadingPdf}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) handleFileUpload(file, 'pdf');
