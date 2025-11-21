@@ -182,7 +182,7 @@ export default function ProjectManager() {
         }
         alert('File uploaded successfully!');
       } else {
-        alert('Upload failed: ' + data.error);
+        alert('Upload failed: ' + (data.message || data.error));
       }
     } catch (error) {
       alert('Error uploading file');
