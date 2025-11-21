@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Your Vercel production URL
-const VERCEL_URL = 'https://portolio-project.vercel.app';
+const VERCEL_URL = 'https://new-portfolio-topaz-nine-18.vercel.app';
 
 // Create a simple test image file
 const testImagePath = path.join(__dirname, 'test-image.png');
