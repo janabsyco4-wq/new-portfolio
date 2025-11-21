@@ -25,23 +25,9 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const handleDownloadPDF = async (pdfUrl: string, projectTitle: string) => {
-    try {
-      const response = await fetch(pdfUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${projectTitle.replace(/[^a-z0-9]/gi, '_')}_Documentation.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Download failed:', error);
-      // Fallback: open in new tab if download fails
-      window.open(pdfUrl, '_blank');
-    }
+  const handleDownloadPDF = (pdfUrl: string) => {
+    // Just open the PDF in a new tab - browser will handle download
+    window.open(pdfUrl, '_blank');
   };
 
   useEffect(() => {
@@ -266,12 +252,12 @@ export default function ProjectDetailPage() {
         {project.pdfUrl && (
           <div className="mb-12">
             <button
-              onClick={() => handleDownloadPDF(project.pdfUrl!, project.title)}
+              onClick={() => handleDownloadPDF(project.pdfUrl!)}
               className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--accent)] text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:-translate-y-2 cursor-pointer"
               style={{ boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)' }}
             >
               <span>📄</span>
-              <span>Download Project Documentation</span>
+              <span>View Project Documentation</span>
             </button>
           </div>
         )}
