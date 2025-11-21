@@ -33,7 +33,6 @@ export async function POST(request: NextRequest) {
     const result = await cloudinary.uploader.upload(dataURI, {
       folder: 'portfolio/uploads',
       resource_type: isPdf ? 'raw' : 'image',
-      format: isPdf ? 'pdf' : undefined,
     });
 
     return NextResponse.json({
