@@ -9,6 +9,18 @@ cloudinary.config({
 
 export async function POST(request: NextRequest) {
   try {
+    // Debug: Check if env vars are loaded
+    if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.error('Missing Cloudinary env vars:', {
+        cloud_name: !!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+        api_key: !!process.env.CLOUDINARY_API_KEY,
+        api_secret: !!process.env.CLOUDINARY_API_SECRET,
+      });
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Cloudinary not configured. Check environment variables.' 
+      }, { status: 500 });
+    }
     const formData = await request.formData();
     const file = formData.get('file') as File;
     
@@ -53,6 +65,11 @@ export async function POST(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Upload error:', error);
+    console.error('Error details:', {
+      message: error?.message,
+      stack: error?.stack,
+      name: error?.name,
+    });
     return NextResponse.json({ 
       success: false, 
       error: error?.message || 'Upload failed' 
