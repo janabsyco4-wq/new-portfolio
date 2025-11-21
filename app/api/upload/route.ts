@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
     const dataURI = `data:${file.type};base64,${base64}`;
 
     const uploadOptions: any = {
-      folder: 'portfolio',
-      resource_type: file.type === 'application/pdf' ? 'raw' : 'image',
+      folder: 'portfolio/uploads',
+      resource_type: file.type === 'application/pdf' ? 'raw' : 'auto',
     };
 
     const result = await cloudinary.uploader.upload(dataURI, uploadOptions);
