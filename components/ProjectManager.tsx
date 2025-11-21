@@ -530,9 +530,9 @@ export default function ProjectManager() {
                 </label>
               </div>
               {formData.pdfUrl && (
-                <p className="text-xs text-green-600 mt-1">
-                  ✓ PDF attached: {formData.pdfUrl.split('/').pop()}
-                </p>
+                <div className="text-xs text-green-600 mt-1">
+                  ✓ PDF attached: <a href={formData.pdfUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-green-700">{formData.pdfUrl.split('/').pop()}</a>
+                </div>
               )}
             </div>
 
